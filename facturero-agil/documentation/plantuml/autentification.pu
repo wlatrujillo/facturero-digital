@@ -1,0 +1,5 @@
+@startuml 
+"User" as User
+User --> (Login)
+User --> (Forgot password)
+@enduml

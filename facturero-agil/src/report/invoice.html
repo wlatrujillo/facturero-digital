@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Factura
+    </title>
+    <link rel="stylesheet" href="assets/bootstrap.css">
+    <link rel="stylesheet" href="assets/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-7" style="padding-right: 3px;">
+                <img class="logo" src="logo.png" alt="">
+                <div id="company" class="card">
+                    <div>
+                        <strong>Dirección Matriz:</strong>
+                        <span>
+                            <%=invoice.company.address%>
+                        </span>
+                    </div>
+                    <div>
+                        <strong>Dirección Sucursal:</strong>
+                        <span white-space:normal;>
+                            <%=invoice.branch.establishment.address%>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-5" style="padding-left: 3px;">
+                <div id="factura" class="card">
+                    <div style="font-size: 10px;">
+                        <strong>RUC:</strong>
+                        <span>
+                            <%=invoice.company.ruc%>
+                        </span>
+                    </div>
+                    <br>
+                    <div style="font-size:20px;text-align:center;"><strong>FACTURA</strong></div>
+                    <div style="font-size: 15px;text-align: center;">
+                        <strong>No</strong>
+                        <span>
+                            <%=invoice.secuence%>
+                        </span>
+                    </div>
+                    <br>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card">
+                    <div>
+                        <strong>Razón Social / Nombre y Apellidos:</strong>
+                        <span>
+                            <%=invoice.firstName%>
+                                <%=invoice.lastName%>
+                        </span>
+                    </div>
+                    <div>
+                        <strong>Cédula:</strong>
+                        <span>
+                            <%=invoice.taxId%>
+                        </span>
+                    </div>
+                    <div>
+                        <strong>Dirección:</strong>
+                        <span>
+                            <%=invoice.customer.address%>
+                        </span>
+                    </div>
+                    <div class="pull-right">
+                        <strong>Fecha:</strong>
+                        <span>
+                            <%=invoice.createdAt.toLocaleString() %>
+                        </span>
+                    </div>
+                    <div>
+                        <strong>Teléfono:</strong>
+                        <span>
+                            <%=invoice.customer.phone%>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-xs-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%invoice.detail.forEach(function(detail, index) {%>
+                            <tr>
+                                <th scope="row">
+                                    <%=index+1%>
+                                </th>
+                                <td>
+                                    <%=detail.product.name%>
+                                </td>
+                                <td>
+                                    <%=detail.quantity%>
+                                </td>
+                                <td>
+                                    $<%=detail.price.toLocaleString(undefined, { minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2 })%>
+                                </td>
+                                <td>
+                                    $<%=detail.total.toLocaleString(undefined, { minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2 })%>
+                                </td>
+                            </tr>
+                            <% });%>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+        <div class="row">
+
+            <div class="col-xs-8">
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">Forma de Pago</th>
+                            <th scope="col">Valor</th>
+
+                        </tr>
+
+                    </thead>
+                    <tbody>
+
+                        <%invoice.payments.forEach(function(payment){%>
+                            <tr>
+                                <td scope="col">
+                                    <%=paymentTypes?.items.find(item=>item.code==payment.code)?.value%>
+                                </td>
+                                <td scope="col">
+                                    $<%=payment.value.toLocaleString(undefined, { minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2 })%>
+                                </td>
+
+                            </tr>
+                            <% }); %>
+
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="col-xs-4">
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+
+                        </tr>
+
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <th scope="col">SUBTOTAL</th>
+                            <td scope="col">
+                                $<%=invoice.totalWithoutTax.toLocaleString(undefined, { minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2 })%>
+                            </td>
+
+                        </tr>
+                        <tr>
+
+                            <th scope="col">IVA</th>
+                            <td scope="col">
+                                $<%=(invoice.total-invoice.totalWithoutTax).toLocaleString(undefined, {
+                                    minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
+                            </td>
+
+                        </tr>
+                        <tr>
+
+                            <th scope="col">ICE</th>
+                            <td scope="col">$0.00</td>
+                        </tr>
+                        <tr>
+
+                            <th scope="col">IBRPNR</th>
+                            <td scope="col">$0.00</td>
+                        </tr>
+                        <tr>
+
+                            <th scope="col">TOTAL</th>
+                            <td scope="col">
+                                $<%=invoice.total.toLocaleString(undefined, { minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2 })%>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
