@@ -20,3 +20,17 @@ node populatedb mongodb://localhost:27017/facturacion
 ```
 sudo apt-get install phantomjs
 ``` 
+
+## Docker frontend angular image
+
+### Build image
+
+```bash
+docker build -t facturero-api .
+```
+
+### Run container
+
+```bash
+docker run -p 8080:8080 --name facturero-api -d facturero-api
+```

@@ -57,3 +57,18 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+## Docker frontend angular image
+
+### Build image
+
+```bash
+docker build -t facturero-web .
+```
+
+### Run container
+
+```bash
+docker run -p 4200:80 --name facturero-web -d facturero-web
+```
