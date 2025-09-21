@@ -1,8 +1,7 @@
-FROM node:14.16.0-alpine3.13
+FROM node:20.19.5-alpine3.22
 
 RUN addgroup app && adduser -S -G app app
 RUN mkdir /app && chown -R app:app /app
-RUN touch /tmp/openssl.cnf
 USER app
 
 WORKDIR /app
@@ -12,4 +11,4 @@ COPY . .
 
 EXPOSE 8080
 
-CMD ["node","server"]
+CMD ["node","server.js"]

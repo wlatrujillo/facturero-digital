@@ -1,0 +1,13 @@
+# Docker frontend angular image
+
+## Build image
+
+```bash
+docker build —t facturero-web .
+```
+
+## Run container
+
+```bash
+docker run -p 4200:80 --name container -d facturero-web
+```
