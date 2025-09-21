@@ -1,3 +1,4 @@
+version: '3' # docker-compose version
 services:
   #If you need replicas of the containers, copy and past. At this moment,
   #DockerComposeV2's "replica" does not work as DockerComposeV1's
@@ -6,17 +7,12 @@ services:
     build:
       context: ./facturero-web
       dockerfile: ./Dockerfile
-  nginx:
-    container_name: middlenginx
-    image: nginx:stable-alpine
     expose:
-      - "80"
+      - "4200"
     ports:
-      - "80:80"
-    volumes:
-      - ./nginx.middle.conf:/etc/nginx/conf.d/default.conf:rw
+      - "4200:80"
     depends_on:
-      - backend
+      - backend  
   backend:
     container_name: facturero-api
     build:
@@ -30,14 +26,10 @@ services:
     container_name: facturero-db
     image: mongo:8.0
     volumes:
-      - mongodb-data:/data/db
+      - ./mongodb-data:/data/db
     ports:
       - "27017:27017"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=Test2025
       - MONGO_INITDB_DATABASE= facturacion
-
-volumes:
-    mongodb-data:
-        external: true
