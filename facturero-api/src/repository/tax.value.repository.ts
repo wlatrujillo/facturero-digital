@@ -8,4 +8,4 @@ class TaxValueRepository extends RepositoryBase<ITaxValue> {
 }
 
 Object.seal(TaxValueRepository);
-export = TaxValueRepository;
+export default TaxValueRepository;

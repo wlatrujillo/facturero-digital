@@ -8,4 +8,4 @@ class CustomerRepository extends RepositoryBase<ICustomer> {
 }
 
 Object.seal(CustomerRepository);
-export = CustomerRepository;
+export default CustomerRepository;

@@ -29,4 +29,4 @@ class RoleRepository {
 }
 
 Object.seal(RoleRepository);
-export = RoleRepository;
+export default RoleRepository;

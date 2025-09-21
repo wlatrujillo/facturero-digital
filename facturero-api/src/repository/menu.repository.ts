@@ -20,4 +20,4 @@ class MenuRepository {
 }
 
 Object.seal(MenuRepository);
-export = MenuRepository;
+export default MenuRepository;

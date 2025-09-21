@@ -4,10 +4,10 @@ import { getLogger } from 'log4js';
 
 import { IUser } from "../model/user";
 import { ICompany } from "../model/company";
-import UserRepository = require("../repository/user.repository");
-import CompanyRepository = require("../repository/company.repository");
+import UserRepository from"../repository/user.repository";
+import CompanyRepository from "../repository/company.repository";
 import { EmailService } from "./mail.service";
-import ServiceException = require("./service.exception");
+import ServiceException from "./service.exception";
 import { Types } from 'mongoose';
 import { Email } from '../model/email';
 
@@ -124,7 +124,9 @@ class AuthService {
     //Cambio contraseña
     async resetPassword(token: string, password: string) {
         let jwtPayload = <any>jwt.verify(token, process.env.SECRET || '');
-        let user = await this._userRepository.findById(jwtPayload.sub);
+        let user = await this._userRepository.findById(jwtPayload.sub); 
+        if (!user)
+            throw new ServiceException(404, "No existe este usuario");
         user.hash = bcrypt.hashSync(password, 10);
         await this._userRepository.update(user._id, user);
     }

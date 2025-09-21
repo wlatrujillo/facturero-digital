@@ -7,19 +7,15 @@ class UserRepository extends RepositoryBase<IUser> {
         super(User);
     }
 
-    findById(_id: Types.ObjectId): Promise<IUser> {
+    async findById(_id: Types.ObjectId): Promise<IUser | null> {
 
-        return new Promise((resolve, reject) => {
-            User.findById(_id)
-                .populate("branch")
-                .exec((error: any, result: IUser) => {
-                    if (error) reject(error)
-                    else resolve(result);
-                });
+        const user = await User.findById(_id)
+            .populate("branch")
+            .exec();
 
-        });
+        return user;
     }
 }
 
 Object.seal(UserRepository);
-export = UserRepository;
+export default UserRepository;

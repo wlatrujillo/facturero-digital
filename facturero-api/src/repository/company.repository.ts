@@ -9,4 +9,4 @@ class CompanyRepository extends RepositoryBase<ICompany> {
 }
 
 Object.seal(CompanyRepository);
-export = CompanyRepository;
+export default CompanyRepository;

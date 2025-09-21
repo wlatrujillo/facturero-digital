@@ -8,4 +8,4 @@ class CityRepository extends RepositoryBase<ICity> {
 }
 
 Object.seal(CityRepository);
-export = CityRepository;
+export default CityRepository;

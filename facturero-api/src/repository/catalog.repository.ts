@@ -14,4 +14,4 @@ class CatalogRepository extends RepositoryBase<ICatalog> {
 }
 
 Object.seal(CatalogRepository);
-export = CatalogRepository;
+export default CatalogRepository;

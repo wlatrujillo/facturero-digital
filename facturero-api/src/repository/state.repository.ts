@@ -8,4 +8,4 @@ class StateRepository extends RepositoryBase<IState> {
 }
 
 Object.seal(StateRepository);
-export = StateRepository;
+export default StateRepository;

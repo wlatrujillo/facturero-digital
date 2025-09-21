@@ -60,8 +60,9 @@ class BranchRepository extends RepositoryBase<IBranch> {
         return new Promise((resolve, reject) => {
             Branch.findById(_id)
                 .populate("establishment")
-                .exec((error: any, result: IBranch) => {
+                .exec((error: any, result: IBranch | null) => {
                     if (error) reject(error)
+                    else if (!result) reject(new Error("Not found"))
                     else resolve(result);
                 });
         });
@@ -70,4 +71,4 @@ class BranchRepository extends RepositoryBase<IBranch> {
 }
 
 Object.seal(BranchRepository);
-export = BranchRepository;
+export default BranchRepository;

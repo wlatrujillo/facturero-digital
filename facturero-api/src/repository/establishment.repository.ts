@@ -9,4 +9,4 @@ class EstablishmentRepository extends RepositoryBase<IEstablishment> {
 }
 
 Object.seal(EstablishmentRepository);
-export = EstablishmentRepository;
+export default EstablishmentRepository;

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import AdminController = require("../controller/admin.ctrl");
+import AdminController from"../controller/admin.ctrl";
 export class AdminRoutes {
 
     router: Router;

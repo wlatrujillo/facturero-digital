@@ -14,8 +14,9 @@ class InvoiceDetailRepository extends RepositoryBase<IInvoiceDetail> {
                 .populate("company")
                 .populate({ path: "invoice", populate: { path: "customer" } })
                 .populate("product")
-                .exec((error: any, result: IInvoiceDetail) => {
+                .exec((error: any, result: IInvoiceDetail | null) => {
                     if (error) reject(error)
+                    else if (!result) reject(null)
                     else resolve(result);
                 });
         });
@@ -23,4 +24,4 @@ class InvoiceDetailRepository extends RepositoryBase<IInvoiceDetail> {
 }
 
 Object.seal(InvoiceDetailRepository);
-export = InvoiceDetailRepository;
+export default InvoiceDetailRepository;

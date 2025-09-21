@@ -1,4 +1,4 @@
-import mongoose, { Model, Types } from "mongoose";
+import mongoose, { CallbackError, Model, Types } from "mongoose";
 import { PageRequest } from "../model/page-request";
 
 class RepositoryBase<T extends mongoose.Document>  {
@@ -67,9 +67,9 @@ class RepositoryBase<T extends mongoose.Document>  {
 
         return new Promise((resolve, reject) => {
 
-            this._model.find(criteria, (error, result) => {
+            this._model.find(criteria, (error: CallbackError, result: T[]) => {
                 if (error) reject(error)
-                else resolve(result)
+                else resolve(result ?? [])
             });
         });
     }
@@ -93,7 +93,7 @@ class RepositoryBase<T extends mongoose.Document>  {
         });
     }
 
-    findById(_id: Types.ObjectId): Promise<T> {
+    findById(_id: Types.ObjectId): Promise<T|null> {
 
         return new Promise((resolve, reject) => {
             this._model.findById(_id, (error: any, result: T) => {
@@ -114,4 +114,4 @@ class RepositoryBase<T extends mongoose.Document>  {
     }
 }
 
-export = RepositoryBase;
+export default RepositoryBase;

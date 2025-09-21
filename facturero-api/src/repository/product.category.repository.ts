@@ -8,4 +8,4 @@ class ProductCategoryRepository extends RepositoryBase<IProductCategory> {
 }
 
 Object.seal(ProductCategoryRepository);
-export = ProductCategoryRepository;
+export default ProductCategoryRepository;

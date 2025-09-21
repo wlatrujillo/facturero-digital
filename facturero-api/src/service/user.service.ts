@@ -9,6 +9,7 @@ import { getLogger } from 'log4js';
 import { Types } from "mongoose";
 import { Email } from "../model/email";
 import { ICompany } from "../model/company";
+import ServiceException from "./service.exception";
 
 const logger = getLogger("UserService");
 class UserService extends CrudService<IUser> {
@@ -32,7 +33,9 @@ class UserService extends CrudService<IUser> {
     async createUser(user: IUser, password: string): Promise<IUser> {
         user.hasToUpdatePassword = true;
         user.hash = bcrypt.hashSync(password, 10);
-        let company: ICompany = await this.companyRepository.findById(user.company);
+        let company: ICompany | null = await this.companyRepository.findById(user.company);
+        if(!company)
+            throw new ServiceException(404, "Company not found");
         let userCreated: IUser = await this._repository.create(user);
         let email: Email = {
             to: userCreated.email,

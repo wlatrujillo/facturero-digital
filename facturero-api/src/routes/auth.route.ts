@@ -1,5 +1,5 @@
 import { Router } from "express";
-import AuthController = require("../controller/auth.ctrl");
+import AuthController from "../controller/auth.ctrl";
 
 
 export class AuthRoutes {

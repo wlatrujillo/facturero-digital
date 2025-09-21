@@ -7,7 +7,7 @@ import { IEstablishment } from "../model/establishment";
 import { Types } from "mongoose";
 import ReportService from "./report.service";
 import { CreateOptions } from "html-pdf";
-import InvoiceDetailRepository from "../repository/inovice.detail.repository";
+import InvoiceDetailRepository from "../repository/invoice.detail.repository";
 import { PageRequest } from "../model/page-request";
 import { getLogger } from "log4js";
 import path from "path";
@@ -16,6 +16,7 @@ import { Email } from "../model/email";
 import CustomerRepository from "../repository/customer.repository";
 import { ICustomer } from "../model/customer";
 import CatalogRepository from '../repository/catalog.repository';
+import ServiceException from "./service.exception";
 
 const logger = getLogger("InvoiceService");
 
@@ -53,11 +54,15 @@ class InvoiceService {
 
         logger.debug('start createInvoice branchId:', branchId);
         let branch: IBranch = await this.branchRepository.findById(this.toObjectId(branchId));
-        let establishment: IEstablishment = await this.establishmentRepository.findById(branch.establishment);
+        let establishment: IEstablishment | null = await this.establishmentRepository.findById(branch.establishment);
+        if (!establishment)
+            throw new ServiceException(404, "Not found");
         branch.next = branch.next + 1;
         logger.debug('branch', branch);
         await this.branchRepository.update(branch._id, branch);
-        let customer: ICustomer = await this.customerRepository.findById(this.toObjectId(invoice.customer));
+        let customer: ICustomer | null = await this.customerRepository.findById(this.toObjectId(invoice.customer));
+        if (!customer)
+            throw new ServiceException(404, "Not found");
         invoice.establishment = establishment._id;
         invoice.branch = branchId;
         invoice.secuence = establishment.code + "-" + branch.code + "-" + "0".repeat(5) + branch.next;

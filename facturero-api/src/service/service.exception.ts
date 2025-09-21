@@ -10,4 +10,4 @@ class ServiceException extends Error {
 }
 
 Object.seal(ServiceException);
-export = ServiceException;
+export default ServiceException;

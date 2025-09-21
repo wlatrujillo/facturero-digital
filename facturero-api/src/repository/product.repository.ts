@@ -53,13 +53,14 @@ class ProductRepository extends RepositoryBase<IProduct> {
         });
     }
 
-    findById(_id: Types.ObjectId): Promise<IProduct> {
+    findById(_id: Types.ObjectId): Promise<IProduct|null> {
 
         return new Promise((resolve, reject) => {
             Product.findById(_id)
                 .populate("taxes")
-                .exec((error: any, result: IProduct) => {
+                .exec((error: any, result: IProduct | null) => {
                     if (error) reject(error)
+                    else if(!result) reject(null)
                     else resolve(result);
                 });
         });
@@ -67,4 +68,4 @@ class ProductRepository extends RepositoryBase<IProduct> {
 }
 
 Object.seal(ProductRepository);
-export = ProductRepository;
+export default ProductRepository;

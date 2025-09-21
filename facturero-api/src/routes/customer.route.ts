@@ -1,5 +1,5 @@
 import { Router } from "express";
-import CustomerController = require("../controller/customer.ctrl");
+import CustomerController from"../controller/customer.ctrl";
 
 
 export class CustomerRoutes {

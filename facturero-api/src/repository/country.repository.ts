@@ -8,4 +8,4 @@ class CountryRepository extends RepositoryBase<ICountry> {
 }
 
 Object.seal(CountryRepository);
-export = CountryRepository;
+export default CountryRepository;
