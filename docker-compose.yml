@@ -2,9 +2,9 @@ services:
   #If you need replicas of the containers, copy and past. At this moment,
   #DockerComposeV2's "replica" does not work as DockerComposeV1's
   frontend:
-    container_name: angularfrontend
+    container_name: facturero-web
     build:
-      context: ./facturer-web
+      context: ./facturero-web
       dockerfile: ./Dockerfile
   nginx:
     container_name: middlenginx
@@ -18,21 +18,26 @@ services:
     depends_on:
       - backend
   backend:
-    container_name: nodebackend
+    container_name: facturero-api
     build:
       context: ./facturero-api
       dockerfile: ./Dockerfile
     ports:
       - "8080:8080"
     depends_on:
-      - db
-  db:
-    container_name: mongo
+      - mongodb
+  mongodb:
+    container_name: facturero-db
     image: mongo:8.0
     volumes:
-      - mongo-data:/data/db
+      - mongodb-data:/data/db
     ports:
       - "27017:27017"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=Test2025
+      - MONGO_INITDB_DATABASE= facturacion
+
+volumes:
+    mongodb-data:
+        external: true

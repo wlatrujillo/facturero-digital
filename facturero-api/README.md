@@ -3,7 +3,7 @@
 ## Requires .env file
 ```
 PORT=8080
-DATABASE=mongodb://localhost:27017/facturacion
+DATABASE=mongodb://localhost:27017/facturero
 SECRET=
 OPENSSL_CONF=/tmp/openssl.cnf
 GMAIL_USER=
@@ -13,7 +13,7 @@ WEB_URL=http://localhost:4200
 
 ## Populate database
 ```
-node populatedb mongodb://localhost:27017/facturacion
+node populatedb mongodb://localhost:27017/facturero
 ```
 
 ### Fix issue html-pdf on ubuntu

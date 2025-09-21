@@ -1,40 +1,6 @@
-'use strict';
-let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
+db = db.getSiblingDB("facturero");
 
-let CatalogSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    active: {
-        type: Boolean,
-        required: true,
-        default: true
-    },
-    items: {
-        type: [{ code: String, value: String }],
-        required: true
-    }
-});
-
-CatalogSchema.index({ name: 1 }, { unique: true });
-
-let Catalog = module.exports = mongoose.model('Catalog', CatalogSchema);
-
-
-
-let create = async (catalog) => {
-
-    let catalogFound = await Catalog.findOne({ name: catalog.name });
-
-    if (catalogFound) {
-        await Catalog.deleteMany({ name: catalog.name });
-    }
-
-    await Catalog.create(catalog);
-}
+db.createCollection("catalogs");
 
 const payment_method = {
     name: "payment_method",
@@ -82,14 +48,9 @@ const product_type = {
     ]
 }
 
-let createCatalogs = async () => {
-    await create(payment_method);
-    await create(identification_type);
-    await create(customer_type);
-    await create(product_type);
-}
 
-
-
-module.exports.createCatalogs = createCatalogs;
+db.catalogs.insertOne(payment_method);
+db.catalogs.insertOne(identification_type);
+db.catalogs.insertOne(customer_type);
+db.catalogs.insertOne(product_type);
 

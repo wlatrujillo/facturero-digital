@@ -1,5 +1,5 @@
 # **Stage 1: Build Stage**
-FROM node:20.19.5-alpine3.22 AS builder
+FROM node:lts-slim AS builder
 
 # Set working directory
 WORKDIR /app
