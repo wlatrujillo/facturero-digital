@@ -1,0 +1,105 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="card">
+
+                <div class="card-header card-header-rose card-header-text">
+                    <div class="card-text">
+
+                        <h4 class="card-title">Usuario</h4>
+                    </div>
+                </div>
+
+
+                <div class="card-body">
+
+                    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" #resetUserForm="ngForm" novalidate>
+
+                        <div class="controlers-wrapper">
+                            <mat-form-field class="example-full-width">
+                                <input disabled style="opacity: 0;" matInput type="text" formControlName="branch"
+                                    placeholder="Punto Emisión">
+                                <input disabled matInput type="text" value="{{branch?.name}}"
+                                    placeholder="Punto Emisión">
+                                <button type="button" mat-icon-button matSuffix (click)="removeBranch()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <button type="button" mat-icon-button matSuffix (click)="searchBranch()">
+                                    <mat-icon>reorder</mat-icon>
+                                </button>
+                                <mat-error *ngIf="handleError('branch', 'required')">
+                                    Este campo es <strong>requerido</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="example-full-width">
+                                <mat-label>Rol</mat-label>
+                                <mat-select formControlName="role">
+                                    <mat-option *ngFor="let r of roles" [value]="r._id">
+                                        {{r.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Nombre" formControlName="firstName">
+                                <mat-error *ngIf="handleError('firstName', 'required')">
+                                    Este campo es <strong>requerido</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Apellido" formControlName="lastName">
+                                <mat-error *ngIf="handleError('lastName', 'required')">
+                                    Este campo es <strong>requerido</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Email" formControlName="email">
+                                <mat-error *ngIf="handleError('email', 'required')">
+                                    Este campo es <strong>requerido</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Teléfono" formControlName="phone">
+                                <mat-error *ngIf="handleError('phone', 'required')">
+                                    Este campo es <strong>requerido</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Dirección" formControlName="address">
+                                <mat-error *ngIf="handleError('address', 'required')">
+                                    Este campo es <strong>requerido</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="example-full-width">
+                                <input type="password" matInput placeholder="Contraseña" formControlName="password">
+                                <mat-error *ngIf="handleError('password', 'required')">
+                                    Esta campo es <strong>requerido</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+
+
+                        <div class="full-wrapper button-wrapper">
+                            <div class="button-wrapper">
+                                <button type="submit" mat-flat-button color="warn">Guardar</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

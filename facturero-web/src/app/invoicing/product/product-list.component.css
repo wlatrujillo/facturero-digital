@@ -1,0 +1,31 @@
+.spinner-container {
+    height: 360px;
+    width: 390px;
+    position: fixed;
+    margin-left: 25%;
+}
+
+.spinner-container mat-spinner {
+    margin: 130px auto 0 auto;
+}
+
+.invoice-table {
+    margin-top: 10px;
+    width: 100%;
+    margin-bottom: 1px;
+}
+
+.invoice-table .group-actions .btn {
+    margin: 0px;
+    padding: 5px;
+}
+
+.invoice-paginator {   
+    width: 100%;
+    float: right;
+}
+
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+    border-bottom-style:unset;
+}
+

@@ -1,0 +1,114 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="card">
+
+                <div class="card-header card-header-rose card-header-text">
+                    <div class="card-text">
+
+                        <h4 class="card-title">Cliente</h4>
+                    </div>
+                </div>
+
+
+                <div class="card-body">
+
+                    <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" #resetCustomerForm="ngForm" novalidate>
+
+                        <div class="controlers-wrapper">
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Nombre" formControlName="firstName">
+                                <mat-error *ngIf="handleError('firstName', 'required')">
+                                    Requiere ingresar <strong>Nombre</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Apellido" formControlName="lastName">
+                                <mat-error *ngIf="handleError('lastName', 'required')">
+                                    Requiere ingresar <strong>Apellido</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Email" formControlName="email">
+                                <mat-error *ngIf="handleError('email', 'required')">
+                                    Requiere ingresar <strong>Email</strong>
+                                </mat-error>
+                                <mat-error *ngIf="handleError('email', 'email')">
+                                    Email no <strong>válido</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+
+                            <mat-form-field class="example-full-width">
+                                <mat-select placeholder="Tipo de cliente" formControlName="type">
+                                    <mat-option *ngFor="let ct of customerTypes?.items" [value]="ct.code">
+                                        {{ct.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+
+
+                            <mat-form-field class="example-full-width">
+                                <mat-select placeholder="Tipo de Identificación" formControlName="taxIdType"
+                                    (selectionChange)="onTaxIdTypeChange()">
+                                    <mat-option *ngFor="let type of identificationTypes?.items" [value]="type.code">
+                                        {{type.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Cédula de Identidad" formControlName="taxId"
+                                    [maxlength]="maxlength">
+                                <mat-error *ngIf="handleError('taxId', 'required')">
+                                    Esta campo es <strong>requerido</strong>
+                                </mat-error>
+                                <mat-error *ngIf="handleError('taxId', 'minlength')">
+                                    Se requiere mínimo
+                                    {{customerForm.get('taxId').errors?.minlength?.requiredLength}}
+                                    caracteres
+                                </mat-error>
+                                <mat-error *ngIf="handleError('taxId', 'invalidCedula')">
+                                    Cédula no válida
+                                </mat-error>
+                            </mat-form-field>
+
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Teléfono" formControlName="phone">
+                                <mat-error *ngIf="handleError('phone', 'required')">
+                                    Requiere ingresar <strong>Teléfono</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Dirección" formControlName="address">
+                                <mat-error *ngIf="handleError('address', 'required')">
+                                    Requiere ingresar <strong>Dirección</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="full-wrapper button-wrapper">
+                            <div class="button-wrapper">
+                                <button mat-flat-button color="warn">Guardar</button>
+                                <button *ngIf="isModalWindow" mat-flat-button (click)="onCloseModalWindow()">
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

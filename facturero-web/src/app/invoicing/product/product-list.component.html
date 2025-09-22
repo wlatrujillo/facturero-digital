@@ -1,0 +1,108 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <!-- Product Category -->
+        <mat-form-field>
+          <mat-select placeholder="Categoria de producto" (selectionChange)="onCategoryChange($event.value)">
+            <mat-option [value]=""></mat-option>
+            <mat-option *ngFor="let item of productCategory$ | async" [value]="item._id">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <mat-form-field appearance="standard">
+          <mat-label>Buscar</mat-label>
+          <input matInput placeholder="Ingrese el texto" #search>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+
+
+
+      <div class="col-sm-12">
+        <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+          <mat-spinner></mat-spinner>
+        </div>
+        <mat-table class="invoice-table mat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="name"
+          matSortDirection="asc" matSortDisableClear>
+
+
+          <ng-container matColumnDef="code">
+
+            <mat-header-cell *matHeaderCellDef>Código</mat-header-cell>
+
+            <mat-cell *matCellDef="let element">{{element.code}}</mat-cell>
+
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+
+            <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+
+            <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+
+            <mat-cell class="description-cell" *matCellDef="let element">{{element.description}}</mat-cell>
+
+          </ng-container>
+
+          <ng-container matColumnDef="price">
+
+            <mat-header-cell *matHeaderCellDef>Precio</mat-header-cell>
+
+            <mat-cell class="duration-cell" *matCellDef="let element">{{element.price | currency}}</mat-cell>
+
+          </ng-container>
+
+
+
+          <!-- actions -->
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>
+              <a mat-icon-button color="primary" [routerLink]="['../new']">
+                <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+              </a>
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index;" class="group-actions text-right">
+              <button mat-raised-button class="btn btn-success btn-link push-right"
+                [routerLink]="['../', element._id, 'edit']">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-raised-button class="btn btn-danger btn-link" (click)="onDelete(i, element)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+        </mat-table>
+
+        <mat-paginator class="invoice-paginator mat-elevation-z8" [length]="dataSource.totalRows$ | async"
+          [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons>
+        </mat-paginator>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>

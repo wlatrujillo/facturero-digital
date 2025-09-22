@@ -1,0 +1,34 @@
+<div class="wrapper wrapper-full-page">
+  <div class="page-header register-page header-filter" filter-color="black"
+    style="background-image: url('./assets/img/register.jpg'); background-size: cover; background-position: top center;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5 ml-auto mr-auto">
+          <div class="card card-signup">
+            <h2 class="card-title text-center">Facturero Ágil </h2>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12 mr-auto">
+
+
+                  <form class="form"  (ngSubmit)="onSubmit()">
+
+
+                   
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary btn-round mt-4" [disabled]="loading">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Activa Tu Cuenta</button>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

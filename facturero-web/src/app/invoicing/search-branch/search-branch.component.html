@@ -1,0 +1,106 @@
+<h2 mat-dialog-title>{{step==1?'Establecimiento':'Punto de Emisión'}}</h2>
+
+
+<mat-dialog-content>
+
+  <div *ngIf="step==1">
+    <div class="spinner-container" *ngIf="establishmentDataSource.loading$ | async">
+      <mat-spinner></mat-spinner>
+    </div>
+
+
+    <mat-table class="invoice-table mat-elevation-z8" [dataSource]="establishmentDataSource">
+
+
+      <ng-container matColumnDef="name">
+
+        <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+
+        <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+
+      </ng-container>
+
+      <ng-container matColumnDef="code">
+
+        <mat-header-cell *matHeaderCellDef>Código</mat-header-cell>
+
+        <mat-cell class="description-cell" *matCellDef="let element">{{element.code}}</mat-cell>
+
+      </ng-container>
+
+
+      <!-- actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>
+
+        </th>
+        <td mat-cell *matCellDef="let element; let i = index;" class="group-actions text-right">
+          <button (click)="selectEstablishment(element)" mat-raised-button class="btn btn-link">Punto
+            emisión</button>
+        </td>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+    </mat-table>
+    <mat-paginator class="invoice-paginator mat-elevation-z8" [length]="establishmentDataSource.totalRows$ | async"
+      [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons>
+    </mat-paginator>
+
+  </div>
+
+  <div *ngIf="step==2">
+
+    <div class="spinner-container" *ngIf="branchDataSource.loading$ | async">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-table class="invoice-table mat-elevation-z8" [dataSource]="branchDataSource">
+
+      <ng-container matColumnDef="name">
+
+        <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+
+        <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+
+      </ng-container>
+
+      <ng-container matColumnDef="code">
+
+        <mat-header-cell *matHeaderCellDef>Número Punto de Venta</mat-header-cell>
+
+        <mat-cell class="description-cell" *matCellDef="let element">{{element.code}}</mat-cell>
+
+      </ng-container>
+
+      <!-- actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>
+        </th>
+        <td mat-cell *matCellDef="let element; let i = index;" class="group-actions text-right">
+          <button mat-raised-button class="btn btn-success btn-link" (click)="closeDialogRef(element)">
+            <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+    </mat-table>
+    <mat-paginator class="invoice-paginator mat-elevation-z8" [length]="branchDataSource.totalRows$ | async"
+      [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+
+  <button class="mat-raised-button" (click)="closeDialogRef(undefined)">
+    Cerrar
+  </button>
+
+</mat-dialog-actions>

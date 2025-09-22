@@ -1,0 +1,89 @@
+<form style="width: 500px;" [formGroup]="customerForm" (ngSubmit)="onSubmit()" #resetCustomerForm="ngForm" novalidate>
+
+    <div class="controlers-wrapper">
+
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Nombre" formControlName="firstName">
+            <mat-error *ngIf="handleError('firstName', 'required')">
+                Requiere ingresar<strong> Nombre</strong>
+            </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Apellido" formControlName="lastName">
+            <mat-error *ngIf="handleError('lastName', 'required')">
+                Requiere ingresar<strong> Apellido</strong>
+            </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Email" formControlName="email">
+            <mat-error *ngIf="handleError('email', 'required')">
+                Requiere ingresar<strong> Email</strong>
+            </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field class="example-full-width">
+            <mat-select placeholder="Tipo de cliente" formControlName="type">
+                <mat-option *ngFor="let ct of customerTypes?.items" [value]="ct.code">
+                    {{ct.value}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+
+        <mat-form-field class="example-full-width">
+            <mat-select placeholder="Tipo de Identificación" formControlName="taxIdType">
+                <mat-option *ngFor="let type of identificationTypes?.items" [value]="type.code">
+                    {{type.value}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Cédula de Identidad" formControlName="taxId" [maxlength]="13">
+            <mat-error *ngIf="handleError('taxId', 'required')">
+                You must provide a<strong> Tax Id</strong>
+            </mat-error>
+            <mat-error *ngIf="handleError('taxId', 'minlength')">
+                Cédula de Identidad debe tener mínimo 10 caracteres
+            </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Teléfono" formControlName="phone">
+            <mat-error *ngIf="handleError('phone', 'required')">
+                Requiere ingresar<strong> Teléfono</strong>
+            </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Dirección" formControlName="address">
+            <mat-error *ngIf="handleError('address', 'required')">
+                Requiere ingresar<strong> Dirección</strong>
+            </mat-error>
+        </mat-form-field>
+
+
+
+    </div>
+
+
+
+    <div class="full-wrapper button-wrapper">
+        <div class="button-wrapper">
+            <button class="mat-raised-button" (click)="close()">
+                Close
+            </button>
+            <button mat-flat-button color="warn">Guardar</button>
+        </div>
+    </div>
+
+</form>

@@ -1,0 +1,232 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <br>
+        <div class="row">
+
+          <div class="col-md-6">
+
+            <div class="card" style="min-height: 125px;">
+              <div class="card-body">
+
+                <legend>Cliente</legend>
+                <div class="input-group no-border">
+                  <input [(ngModel)]="customer.taxId" (keydown.enter)="searchCustomer()" class="form-control"
+                    placeholder="Buscar..." type="search" value="">
+                  <button (click)="findCustomer()" mat-button matSuffix mat-stroked-button aria-label="search"
+                    matTooltip="Buscar cliente">
+                    <mat-icon>search</mat-icon>
+                  </button>
+                  <button (click)="addCustomer()" mat-button matSuffix mat-stroked-button aria-label="search"
+                    matTooltip="Agregar cliente" [matTooltipPosition]="'right'">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+                <div>{{customer.firstName}} {{customer.lastName}} <small>{{customer.email}}</small></div>
+
+
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="col-md-6">
+
+            <div class="card" style="min-height: 125px;">
+              <div class="card-body">
+                <legend>Factura</legend>
+                <div class="row">
+
+                  <div class="col-md-12">
+
+                    <strong>{{branch?.name}} {{branch?.code}}</strong>
+                    <button *ngIf="user?.role=='SUPERADMIN'" (click)="selectBranch()" mat-button matSuffix
+                      mat-liked-button aria-label="search" matTooltip="Seleccionar Caja" [matTooltipPosition]="'right'">
+                      <mat-icon>reorder</mat-icon>
+                    </button>
+                  </div>
+
+                </div>
+
+
+
+                {{invoice.createdAt|date}}
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </div>
+        <br>
+        <div class="row">
+
+          <div class="col-sm-12">
+            <button (click)="addProduct()" mat-raised-button class="btn btn-round btn-info btn-xs">
+              Agregar Producto <i class="material-icons">add</i>
+            </button>
+          </div>
+
+          <div class="col-sm-12 mr-auto">
+            <div class="table-responsive">
+              <table class="table table-shopping">
+                <thead>
+                  <tr>
+                    <th class="text-left">{{ headerRow[0] }}</th>
+                    <th>{{ headerRow[1] }}</th>
+                    <th class="text-right">{{ headerRow[2] }}</th>
+                    <th class="text-center">{{ headerRow[3] }}</th>
+                    <th class="text-right">{{ headerRow[4] }}</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let detail of details">
+                    <td>
+                      <input [(ngModel)]="detail.product.code" matInput (keydown.enter)="searchProduct(detail)"
+                        type="search">
+                    </td>
+                    <td class="td-name">
+                      <a>{{detail.product.name}}</a>
+
+                    </td>
+                    <td class="td-number text-right"> {{detail.product.price | currency}}</td>
+                    <td class="td-number">
+                      {{detail.quantity}}
+                      <div class="btn-group btn-group-sm">
+                        <button mat-raised-button class="btn btn-round btn-info btn-xs" [disabled]="detail.count<=0"
+                          (click)="decreaseCount(detail)">
+                          <i class="material-icons">remove</i> </button>
+                        <button mat-raised-button class="btn btn-round btn-info btn-xs" (click)="increaseCount(detail)">
+                          <i class="material-icons">add</i> </button>
+                      </div>
+                    </td>
+                    <td class="td-number">
+                      {{detail.total | currency}}
+                    </td>
+                    <td class="td-actions">
+                      <button mat-button type="button" matTooltip="Remover item" [matTooltipPosition]="'left'"
+                        class="btn btn-danger btn-link" (click)="removeItem(detail)">
+                        <i class="material-icons">close</i>
+                      </button>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+          <div class="col-12 col-md-7">
+
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table no-padding">
+                    <thead>
+                      <tr>
+                        <th class="text-left">Forma De Pago</th>
+                        <th class="text-right">Valor</th>
+                        <th> <button (click)="addPayment()" mat-icon-button matTooltip="Agregar"
+                            [matTooltipPosition]="'right'" color="primary" class="pull-right">
+                            <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+                          </button>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let p of payments;let $index=index">
+                        <td class="text-left">
+                          <select name="" id="" [(ngModel)]="p.code">
+                            <option [value]="catalog.code" *ngFor="let catalog of (paymentMethod$|async)?.items">
+                              {{catalog.value}}</option>
+                          </select>
+                        </td>
+                        <td class="text-right">
+                          <input type="number" [(ngModel)]="p.value" step="0.01">
+                        </td>
+                        <td class="td-actions pull-right">
+                          <button mat-button type="button" matTooltip="Remover" [matTooltipPosition]="'right'"
+                            class="btn btn-danger btn-link" (click)="removePayment($index,p)">
+                            <i class="material-icons">close</i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-12 col-md-5">
+            <div class="card">
+              <div class="card-body">
+
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="text-left"></th>
+                        <th class="text-right"></th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-left">
+                          SUBTOTAL
+                        </td>
+                        <td class="text-right">
+                          {{invoice.totalWithoutTax | currency}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-left">
+                          IVA
+                        </td>
+                        <td class="text-right">
+                          {{(invoice.total - invoice.totalWithoutTax) | currency}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-left">
+                          TOTAL
+                        </td>
+                        <td class="text-right">
+                          {{invoice.total | currency}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="1"> </td>
+                        <td class="text-right">
+                          <button mat-raised-button type="button" class="btn btn-info btn-round"
+                            (click)="createInvoice(branch,customer,invoice)">Completar compra <i
+                              class="material-icons">keyboard_arrow_right</i></button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  <!-- end card -->
+</div>

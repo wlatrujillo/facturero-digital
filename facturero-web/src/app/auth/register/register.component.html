@@ -1,0 +1,119 @@
+<div class="wrapper wrapper-full-page">
+  <div class="page-header register-page header-filter" filter-color="black"
+    style="background-image: url('./assets/img/register.jpg'); background-size: cover; background-position: top center;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5 ml-auto mr-auto">
+          <div class="card card-signup">
+            <h2 class="card-title text-center">Facturero Ágil</h2>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12 mr-auto">
+
+                  <form class="form" [formGroup]="registerForm" (ngSubmit)="enviarRegistro()">
+
+                    <mat-form-field class="has-default">
+                      <mat-icon matSuffix>store</mat-icon>
+                      <input type="text" matInput placeholder="RUC" formControlName="ruc">
+                      <mat-error *ngIf="fval.ruc.errors&&fval.ruc.errors.required">
+                        Este campo es <strong>requerido</strong>
+                      </mat-error>
+                      <mat-error *ngIf="fval.ruc.errors&&fval.ruc.errors.minlength">
+                        Debe tener 13 caracteres
+                      </mat-error>
+                      <mat-error *ngIf="fval.ruc.errors&&fval.ruc.errors.maxlength">
+                        Debe tener 13 caracteres
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="has-default">
+                      <mat-icon matSuffix>account_circle</mat-icon>
+                      <input type="text" matInput placeholder="Nombre" formControlName="firstName">
+                      <mat-error *ngIf="fval.firstName.errors&&fval.firstName.errors.required">
+                        Este campo es <strong>requerido</strong>
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="has-default">
+                      <mat-icon matSuffix>account_circle</mat-icon>
+                      <input type="text" matInput placeholder="Apellido" formControlName="lastName">
+                      <mat-error *ngIf="fval.lastName.errors&&fval.lastName.errors.required">
+                        Este campo es <strong>requiredo</strong>
+                      </mat-error>
+                    </mat-form-field>
+
+
+                    <mat-form-field class="has-default">
+                      <mat-icon matSuffix>email</mat-icon>
+                      <input type="email" matInput placeholder="Email" formControlName="email">
+                      <mat-error *ngIf="fval.email.errors&&fval.email.errors.required">
+                        Este campo es <strong>requiredo</strong>
+                      </mat-error>
+                      <mat-error *ngIf="fval.email.errors&&fval.email.errors.email">
+                        Debe ser una dirección de correo electrónico válida
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="has-default">
+                      <mat-icon matSuffix>lock_outline</mat-icon>
+                      <input type="password" matInput placeholder="Contraseña" formControlName="password">
+                      <mat-error *ngIf="handleError('password','required')">
+                        Este campo es <strong>requiredo</strong>
+                      </mat-error>
+                      <mat-error *ngIf="handleError('password','hasNumber')">
+                        La contraseña debe tener números
+                      </mat-error>
+                      <mat-error *ngIf="handleError('password','hasCapitalCase')">
+                        La contraseña de tener mayusculas
+                      </mat-error>
+                      <mat-error *ngIf="handleError('password','hasSmallCase')">
+                        La contraseña debe tener minusculas
+                      </mat-error>
+                      <mat-error *ngIf="handleError('password','minlength')">
+                        La contraseña debe tener al menos 8 caracteres
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="has-default" style="margin-top: 5px;">
+                      <mat-icon matSuffix>lock_outline</mat-icon>
+                      <input type="password" matInput placeholder="Confirmar Contraseña"
+                        formControlName="confirmPassword">
+                      <mat-error *ngIf="handleError('confirmPassword','required')">
+                        Este campo es <strong>requiredo</strong>
+                      </mat-error>
+                      <mat-error *ngIf="handleError('confirmPassword','NoPasswordMatch')">
+                        La contraseña no <strong>coincide</strong>
+                      </mat-error>
+                    </mat-form-field>
+
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="" checked="">
+                        <span class="form-check-sign">
+                          <span class="check"></span>
+                        </span>
+                        Aceptar
+                        <a href="">términos y condiciones</a>.
+                      </label>
+                    </div>
+
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary btn-round mt-4" [disabled]="loading">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Registrarse</button>
+                      <button type="button" [routerLink]="['/auth/login']" class="btn btn-round mt-4">Iniciar
+                        Sesión</button>
+                    </div>
+
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

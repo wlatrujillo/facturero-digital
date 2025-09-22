@@ -1,0 +1,74 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-icon card-header-rose">
+            <h4 class="card-title">Empresa
+            </h4>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="companyForm" (ngSubmit)="onFormSubmit()">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Nombre de la Empresa</label>
+                    <input type="text" class="form-control" formControlName="name">
+                    <app-field-error [displayError]="handleError('name', 'required')"
+                      errorMsg="Este campo es requerido">
+                    </app-field-error>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">RUC (deshabilitado)</label>
+                    <input type="text" class="form-control" formControlName="ruc" disabled>
+                    <app-field-error [displayError]="handleError('ruc', 'required')" errorMsg="Este campo es requerido">
+                    </app-field-error>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Correo Electrónico</label>
+                    <input type="email" class="form-control" formControlName="email">
+                    <app-field-error [displayError]="handleError('email', 'required')"
+                      errorMsg="Este campo es requerido">
+                    </app-field-error>
+                    <app-field-error [displayError]="handleError('email', 'email')" errorMsg="Email invalido">
+                    </app-field-error>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Teléfono</label>
+                    <input type="text" class="form-control" formControlName="phone">
+                    <app-field-error [displayError]="handleError('phone', 'required')"
+                      errorMsg="Este campo es requerido">
+                    </app-field-error>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Dirección</label>
+                    <input type="text" class="form-control" formControlName="address">
+                    <app-field-error [displayError]="handleError('address', 'required')"
+                      errorMsg="Este campo es requerido">
+                    </app-field-error>
+                  </div>
+                </div>
+              </div>
+              <button mat-raised-button type="submit" class="btn btn-rose pull-right" [disabled]="loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Guardar
+              </button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

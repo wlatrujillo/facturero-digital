@@ -1,0 +1,59 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="card">
+
+        <div class="card-header card-header-rose card-header-text">
+          <div class="card-text">
+            <h4 class="card-title">Impuestos</h4>
+          </div>
+        </div>
+
+
+        <div class="card-body">
+
+          <form [formGroup]="taxValueForm" (ngSubmit)="onSubmit()">
+
+            <div class="controlers-wrapper">
+              <!-- Tax -->
+              <mat-form-field class="example-full-width">
+                <mat-select placeholder="Tipo de Impuesto" formControlName="tax">
+                  <mat-option *ngFor="let item of (taxType$ | async)?.items" [value]="item.code">
+                    {{item.value}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <!-- Percentage -->
+              <mat-form-field class="example-full-width">
+                <input type="number" matInput placeholder="Porcentaje" formControlName="percentage">
+                <mat-error *ngIf="handleError('percentage', 'required')">
+                  Este campo es <strong>requerido</strong>
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Description -->
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Descripción" formControlName="description">
+                <mat-error *ngIf="handleError('description', 'required')">
+                  Este campo es <strong>requerido</strong>
+                </mat-error>
+              </mat-form-field>
+
+            </div>
+
+            <div class="full-wrapper button-wrapper">
+              <div class="button-wrapper">
+                <button mat-flat-button color="warn">Guardar</button>
+              </div>
+            </div>
+
+          </form>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
