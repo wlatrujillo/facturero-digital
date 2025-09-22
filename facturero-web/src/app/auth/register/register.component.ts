@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, PatternValidator, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Company } from 'src/app/core/model/company';
@@ -10,7 +10,7 @@ import { AuthenticationService } from 'src/app/core/service/authentication.servi
   templateUrl: './register.component.html'
 })
 
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnInit, OnDestroy, AfterContentInit {
   test: Date = new Date();
 
   loading = false;
@@ -23,6 +23,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private alertService: AlertService) {
     console.log('Entro al constructor');
+  }
+  ngAfterContentInit(): void {
+    const card = document.getElementsByClassName('card card-signup')[0];
+    if (card) {
+      setTimeout(() => {
+        card.classList.remove('card-hidden');
+      }, 400);
+    }
   }
 
   ngOnInit() {

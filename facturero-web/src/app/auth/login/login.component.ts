@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy, AfterContentInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/core/service/alert.service';
@@ -9,7 +9,7 @@ import { AuthenticationService } from 'src/app/core/service/authentication.servi
     templateUrl: './login.component.html'
 })
 
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy, AfterContentInit {
     test: Date = new Date();
     loginForm: FormGroup;
     loading = false;
@@ -28,6 +28,15 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.nativeElement = element.nativeElement;
         this.sidebarVisible = false;
     }
+    ngAfterContentInit(): void {
+        // Remove the 'card-hidden' class from the login/register card after content initialization
+        const card = document.getElementsByClassName('card card-login')[0];
+        if (card) {
+            setTimeout(() => {
+                card.classList.remove('card-hidden');
+            }, 400);
+        }
+    }
 
     ngOnInit() {
         var navbar: HTMLElement = this.element.nativeElement;
@@ -36,12 +45,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         const body = document.getElementsByTagName('body')[0];
         body.classList.add('login-page');
         body.classList.add('off-canvas-sidebar');
-        const card = document.getElementsByClassName('card')[0];
-        setTimeout(function () {
-            // after 1000 ms we add the class animated to the login/register card
-            card.classList.remove('card-hidden');
-        }, 300);
-
+     
         this.loginForm = this.formBuilder.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required]]
@@ -53,7 +57,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         var body = document.getElementsByTagName('body')[0];
         var sidebar = document.getElementsByClassName('navbar-collapse')[0];
         if (this.sidebarVisible == false) {
-            setTimeout(function () {
+            setTimeout(() => {
                 toggleButton.classList.add('toggled');
             }, 500);
             body.classList.add('nav-open');
