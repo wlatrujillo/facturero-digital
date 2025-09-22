@@ -11,7 +11,7 @@ import { UpdatePasswordComponent } from './update-password/update-password.compo
 import { LoginCompanyComponent } from './login-company/login-company.component';
 
 //se define las rutas de la autentificación facilitando la movilidad entre pantallas inicializandolas
-export const PagesRoutes: Routes = [
+export const AuthRoutes: Routes = [
     {
         path: '',
         redirectTo: 'login',

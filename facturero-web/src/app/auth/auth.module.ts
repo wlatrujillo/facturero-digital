@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../app.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { PagesRoutes } from './auth.routing';
+import { AuthRoutes } from './auth.routing';
 import { RegisterComponent } from './register/register.component';
 import { PricingComponent } from './pricing/pricing.component';
 import { LockComponent } from './lock/lock.component';
@@ -20,7 +20,7 @@ import { LoginCompanyComponent } from './login-company/login-company.component';
   //importación de módulos
   imports: [
     CommonModule,
-    RouterModule.forChild(PagesRoutes),
+    RouterModule.forChild(AuthRoutes),
     FormsModule,
     MaterialModule,
     ReactiveFormsModule
@@ -39,4 +39,4 @@ import { LoginCompanyComponent } from './login-company/login-company.component';
   ]
 })
 
-export class PagesModule { }
+export class AuthModule { }

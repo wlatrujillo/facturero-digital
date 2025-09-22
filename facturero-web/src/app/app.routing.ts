@@ -30,7 +30,7 @@ export const AppRoutes: Routes = [
         component: AuthLayoutComponent,
         children: [{
             path: '',
-            loadChildren: () => import('./auth/auth.module').then(m => m.PagesModule)
+            loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
         }]
     }
 ];
