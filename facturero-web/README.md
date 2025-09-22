@@ -336,3 +336,18 @@ Dribbble: <https://dribbble.com/creativetim>
 Google+: <https://plus.google.com/+CreativetimPage>
 
 Instagram: <https://instagram.com/creativetimofficial>
+
+
+## Docker frontend angular image
+
+### Build image
+
+```bash
+docker build -t facturero-web .
+```
+
+### Run container
+
+```bash
+docker run -p 4200:80 --name facturero-web -d facturero-web
+```
