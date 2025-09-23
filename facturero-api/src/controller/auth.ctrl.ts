@@ -13,8 +13,23 @@ class AuthController {
         try {
             let user: IUser = <IUser>req.body.user;
             let company: ICompany = <ICompany>req.body.company;
-            let newUser = await new AuthService().register(company, user, req.body.user.password);
-            res.send(newUser);
+            let newUser : IUser;
+            if (process.env.GMAIL_USER && process.env.GMAIL_SECRET) {
+                newUser = await new AuthService().register(company, user, req.body.user.password);
+            } else {
+                newUser = await new AuthService().registerWithoutEmail(company, user, req.body.user.password);
+            }
+            res.status(200)
+                .send({
+                    message: 'Usuario registrado correctamente',
+                    user: {
+                        id: newUser._id,
+                        email: newUser.email,
+                        firstName: newUser.firstName,
+                        lastName: newUser.lastName,
+                        active: newUser.active
+                    }
+                });
         }
         catch (error: any) {
             logger.error(error);

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, PatternValidator, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 import { Company } from 'src/app/core/model/company';
 import { User } from 'src/app/core/model/user';
 import { AlertService } from 'src/app/core/service/alert.service';
@@ -71,7 +72,7 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterContentInit {
   get fval() { return this.registerForm.controls; }
 
 
-  enviarRegistro() {
+  onRegister() {
     this.submitted = true;
     if (this.registerForm.invalid) {
       return;
@@ -92,18 +93,23 @@ export class RegisterComponent implements OnInit, OnDestroy, AfterContentInit {
     user.email = this.registerForm.value.email;
     user.password = this.registerForm.value.password;
 
-    this.authenticationService.register(company, user)
-      .subscribe(
-        data => {
-          this.loading = false;
-          this.alertService.info("Revisa tu correo electrónico para activar tu cuenta");
+    this.authenticationService
+      .register(company, user)
+      .pipe(
+        finalize(() => { this.loading = false; })
+      )
+      .subscribe({
+        next: (user) => {
+          if (user && user.active) {
+            this.alertService.info("Revisa tu correo electrónico para activar tu cuenta");
+          }
           this.router.navigate(['/auth/login']);
         },
-        error => {
+        error: (error) => {
           //this.toastr.error(error.error.message, 'Error');
-          this.loading = false;
           this.alertService.error(error);
-        });
+        }
+      });
 
   }
 

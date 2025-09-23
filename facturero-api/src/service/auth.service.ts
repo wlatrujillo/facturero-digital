@@ -4,7 +4,7 @@ import { getLogger } from 'log4js';
 
 import { IUser } from "../model/user";
 import { ICompany } from "../model/company";
-import UserRepository from"../repository/user.repository";
+import UserRepository from "../repository/user.repository";
 import CompanyRepository from "../repository/company.repository";
 import { EmailService } from "./mail.service";
 import ServiceException from "./service.exception";
@@ -25,7 +25,25 @@ class AuthService {
         this.emailService = new EmailService();
     }
 
-    async register(company: ICompany, user: IUser, password: string) {
+    async registerWithoutEmail(company: ICompany, user: IUser, password: string): Promise<IUser> {
+        //Metodo que registra el usuario nuevo
+        logger.debug('Start register without email', company, user);
+        //Crea la empresa
+        let companyCreated = await this._companyRepository.create(company);
+        //resetea la id de la empresa
+        user.company = companyCreated._id;
+        //encripta la contraseña
+        user.hash = bcrypt.hashSync(password, 10);
+        //usuario desactivado
+        user.active = true;
+        // asigna rol SUPERADMIN
+        user.role = 'SUPERADMIN';
+        //Crea el usuario
+        return await this._userRepository.create(user);
+
+    }
+
+    async register(company: ICompany, user: IUser, password: string): Promise<IUser> {
         //Metodo que registra el usuario nuevo
         logger.debug('Start register', company, user);
         //Crea la empresa
@@ -48,7 +66,9 @@ class AuthService {
             context: { link: `${process.env.WEB_URL}/#/auth/activate-account/${userCreated._id}` }
         }
         //envia el correo
-        this.emailService.sendMail(email);
+        await this.emailService.sendMail(email);
+
+        return userCreated;
     }
 
     async authenticate(email: string, password: string) {
@@ -124,7 +144,7 @@ class AuthService {
     //Cambio contraseña
     async resetPassword(token: string, password: string) {
         let jwtPayload = <any>jwt.verify(token, process.env.SECRET || '');
-        let user = await this._userRepository.findById(jwtPayload.sub); 
+        let user = await this._userRepository.findById(jwtPayload.sub);
         if (!user)
             throw new ServiceException(404, "No existe este usuario");
         user.hash = bcrypt.hashSync(password, 10);
