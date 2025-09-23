@@ -81,7 +81,7 @@
             </th>
             <td mat-cell *matCellDef="let element; let i = index;" class="group-actions text-right">
               <button mat-raised-button class="btn btn-success btn-link push-right"
-                [routerLink]="['../', element._id, 'edit']">
+                [routerLink]="['.', element._id, 'edit']">
                 <mat-icon>edit</mat-icon>
               </button>
               <button mat-raised-button class="btn btn-danger btn-link" (click)="onDelete(i, element)">
