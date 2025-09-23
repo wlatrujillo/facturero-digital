@@ -4,11 +4,10 @@
 ```
 PORT=8080
 DATABASE=mongodb://localhost:27017/facturero
+WEB_URL=http://localhost:4200
 SECRET=
-OPENSSL_CONF=/tmp/openssl.cnf
 GMAIL_USER=
 GMAIL_SECRET=
-WEB_URL=http://localhost:4200
 ```
 
 ## Populate database

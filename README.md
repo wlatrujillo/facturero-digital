@@ -14,17 +14,25 @@ Mongo DB
 
 ## Installation
 
-### Requirments
+### Requirements
 
 * Docker
-* Mongo DB
-* Node Version >= 20
-* Angular 20
+* NodeJS >= 20
 
+### Docker compose
 
-#### Install Mongo DB with Docker
+Requires .env file
+```env
+mongo_data_path=D:\mongo_data
+mongo_root_password=YourPassword
+```
 
+```shell
+docker-compose up
+```
+
+### Mongo DB local 
 
 ```
-docker run --name facturero-mongodb -p 27017:27017 -d mongo
+docker run --name facturero-mongodb -p 27017:27017 -v ./mongodb-data:/docker-entrypoint-initdb.d:ro -d mongo:8.0
 ```
