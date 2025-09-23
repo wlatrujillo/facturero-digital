@@ -26,8 +26,8 @@ services:
     container_name: facturero-db
     image: mongo:8.0
     volumes:
-      - mongodb-data:/data/db
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongodb-vol:/data/db
+      - ./mongodb-data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     ports:
       - "27017:27017"
     environment:
@@ -36,7 +36,7 @@ services:
       - MONGO_INITDB_DATABASE= facturacion
 
 volumes:
-    mongodb-data:
+    mongodb-vol:
         driver: local
         driver_opts:
             o: bind

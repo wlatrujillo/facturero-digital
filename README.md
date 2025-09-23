@@ -26,5 +26,5 @@ Mongo DB
 
 
 ```
-docker run --name facturero-mongodb -d mongo:latest
+docker run --name facturero-mongodb -p 27017:27017 -d mongo
 ```
