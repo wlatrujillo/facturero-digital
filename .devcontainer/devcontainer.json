@@ -8,7 +8,11 @@
     },
     "portsAttributes": {
         "4200": {
-            "label": "Facturacion cliente",
+            "label": "Facturacion web",
+            "onAutoForward": "notify"
+        },
+        "8080": {
+            "label": "Facturacion api",
             "onAutoForward": "notify"
         }
     }
