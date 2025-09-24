@@ -67,7 +67,7 @@ export class ProductUpdateComponent implements OnInit {
 
         let product: Product = this.route.snapshot.data["product"] || {};
 
-        this.dataSource = product.taxes;
+        this.dataSource = product.taxes || [];
 
         this.productForm = this.fb.group({
             category: [product.category, [Validators.required]],

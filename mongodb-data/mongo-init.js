@@ -62,5 +62,6 @@ db.menus.insertMany([
     { parent: administration.insertedId, path: 'customer', title: 'Clientes', ab: 'CL', roles: ['SUPERADMIN', 'ADMIN'] },
     { parent: administration.insertedId, path: 'establishment', title: 'Establecimientos', ab: 'ES', roles: ['SUPERADMIN', 'ADMIN'] },
     { parent: administration.insertedId, path: 'user', title: 'Usuarios', ab: 'US', roles: ['SUPERADMIN', 'ADMIN'] },
-    { parent: administration.insertedId, path: 'query-invoice', title: 'Consulta Facturas', ab: 'CF', roles: ['SUPERADMIN', 'ADMIN'] }
+    { parent: administration.insertedId, path: 'query-invoice', title: 'Consulta Facturas', ab: 'CF', roles: ['SUPERADMIN', 'ADMIN'] },
+    { parent: administration.insertedId, path: 'tax-value', title: 'Impuestos', ab: 'IM', roles: ['SUPERADMIN', 'ADMIN'] }
 ]);
