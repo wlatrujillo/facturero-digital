@@ -9,7 +9,8 @@ export const AppRoutes: Routes = [
         path: '',
         redirectTo: 'auth',
         pathMatch: 'full',
-    }, {
+    },
+    {
         path: '',
         component: AdminLayoutComponent,
         canActivate: [AuthGuard],
@@ -17,15 +18,22 @@ export const AppRoutes: Routes = [
             {
                 path: '',
                 loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
-            }, {
+            },
+            {
                 path: 'invoicing',
                 loadChildren: () => import('./invoicing/invoicing.module').then(m => m.InvoicingModule)
-            }, {
+            },
+            {
+                path: 'admin',
+                loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+            },
+            {
                 path: '',
                 loadChildren: () => import('./userpage/user.module').then(m => m.UserModule)
             }
         ]
-    }, {
+    },
+    {
         path: 'auth',
         component: AuthLayoutComponent,
         children: [{

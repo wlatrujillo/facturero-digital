@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import { SearchProductComponent } from '../searchproduct/search-product.component';
-import { SearchCustomerComponent } from '../searchcustomer/search-customer.component';
+import { SearchProductComponent } from '../../admin/searchproduct/search-product.component';
+import { SearchCustomerComponent } from '../../admin/searchcustomer/search-customer.component';
 import { Branch } from 'src/app/core/model';
 import { Customer } from 'src/app/core/model/customer';
 import { Invoice } from 'src/app/core/model/invoice';
@@ -15,11 +15,11 @@ import { EstablishmentService } from 'src/app/core/service/establishment.service
 import { InvoiceService } from 'src/app/core/service/invoice.service';
 import { ProductService } from 'src/app/core/service/product.service';
 import { AlertService } from 'src/app/core/service/alert.service';
-import { CustomerUpdateComponent } from '../customer/customer-update.component';
+import { CustomerUpdateComponent } from '../../admin/customer/customer-update.component';
 import { Payment } from 'src/app/core/model/payment';
 import { Catalog } from 'src/app/core/model/catalog';
 import { AdminService } from 'src/app/core/service/admin.service';
-import { SearchBranchComponent } from '../search-branch/search-branch.component';
+import { SearchBranchComponent } from '../../admin/search-branch/search-branch.component';
 import { Observable } from 'rxjs';
 
 
