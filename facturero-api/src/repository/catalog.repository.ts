@@ -5,6 +5,10 @@ class CatalogRepository extends RepositoryBase<ICatalog> {
     constructor() {
         super(Catalog);
     }
+
+    insertMany(items: ICatalog[]): Promise<ICatalog[]> {
+        return Catalog.insertMany(items);
+    }
     
     retrieveWithCriteria(criteria: any) {
 

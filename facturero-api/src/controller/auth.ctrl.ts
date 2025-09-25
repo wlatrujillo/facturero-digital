@@ -13,12 +13,8 @@ class AuthController {
         try {
             let user: IUser = <IUser>req.body.user;
             let company: ICompany = <ICompany>req.body.company;
-            let newUser : IUser;
-            if (process.env.GMAIL_USER && process.env.GMAIL_SECRET) {
-                newUser = await new AuthService().register(company, user, req.body.user.password);
-            } else {
-                newUser = await new AuthService().registerWithoutEmail(company, user, req.body.user.password);
-            }
+            let newUser: IUser;
+            newUser = await new AuthService().register(company, user, req.body.user.password);
             res.status(200)
                 .send({
                     message: 'Usuario registrado correctamente',

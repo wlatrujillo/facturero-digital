@@ -8,11 +8,17 @@ interface Item {
 export interface ICatalog extends Document {
     name: String;
     active: Boolean;
-    items: Types.Array<Item>
+    items: Item[];
+    company: Types.ObjectId;
 }
 
 
 let CatalogSchema = new Schema({
+    company: {
+        type: Schema.Types.ObjectId,
+        ref: 'Company',
+        required: true
+    },
     name: {
         type: String,
         required: true,

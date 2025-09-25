@@ -27,7 +27,7 @@ services:
     image: mongo:8.0
     volumes:
       - mongodb-vol:/data/db
-      - ./mongodb-data:/docker-entrypoint-initdb.d:ro
+      - ./mongodb-data/mongo-init.js:/docker-entrypoint-initdb.d/mongodb-init.js:ro
     ports:
       - "27017:27017"
     environment:

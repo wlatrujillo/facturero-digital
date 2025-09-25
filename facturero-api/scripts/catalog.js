@@ -82,11 +82,22 @@ const product_type = {
     ]
 }
 
+const tax_type = {
+    name: "tax_type",
+    active: true,
+    items: [
+        { code: 'IVA', value: 'IVA' },
+        { code: 'ICE', value: 'ICE' },
+        { code: 'IRBPNR', value: 'IRBPNR' }
+    ]
+}
+
 let createCatalogs = async () => {
     await create(payment_method);
     await create(identification_type);
     await create(customer_type);
     await create(product_type);
+    await create(tax_type);
 }
 
 
