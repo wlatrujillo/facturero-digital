@@ -1,0 +1,57 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="card">
+
+                <div class="card-header card-header-rose card-header-text">
+                    <div class="card-text">
+
+                        <h4 class="card-title">Catalog</h4>
+                    </div>
+                </div>
+
+
+                <div class="card-body">
+
+                    <form [formGroup]="catalogForm" (ngSubmit)="onSubmit()" #resetCatalogForm="ngForm" novalidate>
+
+                        <div class="controlers-wrapper">
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Nombre" formControlName="name">
+                                <mat-error *ngIf="handleError('name', 'required')">
+                                    Requiere ingresar <strong>Nombre</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Activo" formControlName="active">
+                                <mat-error *ngIf="handleError('active', 'required')">
+                                    Requiere ingresar <strong>Activo</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Descripcion" formControlName="description">
+                                <mat-error *ngIf="handleError('name', 'required')">
+                                    Requiere ingresar <strong>descripcion</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="full-wrapper button-wrapper">
+                            <div class="button-wrapper">
+                                <button mat-flat-button color="warn">Guardar</button>
+                                <button *ngIf="isModalWindow" mat-flat-button (click)="onCloseModalWindow()">
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

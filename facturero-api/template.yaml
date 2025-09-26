@@ -1,0 +1,222 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: The template used to create an ECS Service from the ECS Console.
+
+Parameters:
+  Environment:
+    Type: String
+    Description: The environment to deploy the stack to. 
+    Default: dev
+    ConstraintDescription: Must specify dev, qa, or prod.
+    AllowedValues:
+      - dev
+      - qa
+      - prod
+  CertificateArn:
+    Type: String
+    Description: The ARN of the certificate to use for HTTPS. 
+    Default: arn:aws:acm:us-east-1:030608081964:certificate/89015ca3-cf23-4f8d-9d27-3d6bc9283d24 
+  SubnetIDs:
+    Type: CommaDelimitedList
+    Default: subnet-874d6fa6,subnet-dd577682,subnet-942f319a,subnet-c65773a0,subnet-69a7cf58,subnet-8f6a9ec3
+  VpcID:
+    Type: String
+    Default: vpc-f104748c
+  TaskDefinitionName:
+    Type: String
+    Description: The name of the task definition to use. 
+    Default: facturero-definition
+  TaskDefinitionVersion:
+    Type: String
+    Description: The version of the task definition to use. 
+    Default: 2
+  TaskDefinitionContainerName:
+    Type: String
+    Description: The name of the container in the task definition to use. 
+    Default: facturero-api
+    
+Resources:
+
+  ALBSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+        GroupName: !Sub "${Environment}-alb-sg"
+        GroupDescription: "security group for ALB"
+        Tags: 
+          - Key: "Group"
+            Value: !Sub "${AWS::StackName}"
+        VpcId: !Ref VpcID
+        SecurityGroupIngress: 
+          - CidrIp: "0.0.0.0/0"
+            FromPort: 8080
+            IpProtocol: "tcp"
+            ToPort: 8080
+          - CidrIp: "0.0.0.0/0"
+            FromPort: 443
+            IpProtocol: "tcp"
+            ToPort: 443
+
+    
+  ECSSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+        GroupName: !Sub "${Environment}-ecs-sg"
+        GroupDescription: "security group for ECS"
+        Tags: 
+          - Key: "Group"
+            Value: !Sub "${AWS::StackName}" 
+        VpcId: !Ref VpcID
+        SecurityGroupIngress: 
+          - SourceSecurityGroupId: !Ref ALBSecurityGroup
+            FromPort: 8080
+            IpProtocol: "tcp"
+            ToPort: 8080
+          - SourceSecurityGroupId: !Ref ALBSecurityGroup
+            FromPort: 443
+            IpProtocol: "tcp"
+            ToPort: 443
+    DependsOn:
+    - ALBSecurityGroup
+    
+  ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Type: application
+      Name: !Sub "${Environment}-alb"
+      SecurityGroups:
+        - !Ref ALBSecurityGroup 
+      Subnets:
+        Ref: SubnetIDs
+      Tags:
+        - Key: "Group"
+          Value: !Sub "${AWS::StackName}"
+    DependsOn:
+    - ALBSecurityGroup
+        
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckPath: "/"
+      Name: !Sub "${Environment}-target-group"
+      Port: 8080
+      Protocol: HTTP
+      TargetType: ip
+      HealthCheckProtocol: HTTP
+      VpcId:
+        Ref: VpcID
+      Tags:
+        - Key: "Group"
+          Value: !Sub "${AWS::StackName}"
+        
+  Listener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn:
+          Ref: TargetGroup
+      LoadBalancerArn:
+        Ref: ApplicationLoadBalancer
+      Port: 8080
+      Protocol: HTTP
+
+  HTTPSlistener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    DependsOn: ApplicationLoadBalancer
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: '443'
+      Protocol: HTTPS
+      Certificates:
+        - CertificateArn: !Ref CertificateArn
+
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Sub "${Environment}-cluster"
+      CapacityProviders:
+      - FARGATE
+      - FARGATE_SPOT
+      ClusterSettings:
+      - Name: containerInsights
+        Value: disabled
+      Configuration:
+        ExecuteCommandConfiguration:
+          Logging: DEFAULT
+      ServiceConnectDefaults:
+        Namespace: "com.amazonaws.ecs"
+      Tags:
+        - Key: "Group"
+          Value: !Sub "${AWS::StackName}"
+
+  ECSService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref ECSCluster
+      CapacityProviderStrategy:
+      - CapacityProvider: FARGATE
+        Base: 0
+        Weight: 1
+      TaskDefinition: !Sub arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:task-definition/${TaskDefinitionName}:${TaskDefinitionVersion}
+      ServiceName: !Sub "${Environment}-service"
+      SchedulingStrategy: REPLICA
+      DesiredCount: 1
+      LoadBalancers:
+      - ContainerName: !Sub ${TaskDefinitionContainerName} 
+        ContainerPort: 8080
+        LoadBalancerName:
+          Ref: AWS::NoValue
+        TargetGroupArn:
+          Ref: TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !Ref ECSSecurityGroup
+          Subnets:
+            Ref: SubnetIDs
+      PlatformVersion: LATEST
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+      DeploymentController:
+        Type: ECS
+      ServiceConnectConfiguration:
+        Enabled: false
+      Tags:
+        - Key: "Group"
+          Value: !Sub "${AWS::StackName}"
+      EnableECSManagedTags: true
+    DependsOn:
+    - ECSCluster
+    - Listener
+    - HTTPSlistener
+    - ECSSecurityGroup
+    - TargetGroup
+
+Outputs:
+
+  ECSCluster:
+    Description: The created cluster.
+    Value:
+      Ref: ECSCluster
+  ECSService:
+    Description: The created service.
+    Value:
+      Ref: ECSService
+  ApplicationLoadBalancer:
+    Description: The created load balancer.
+    Value:
+      Ref: ApplicationLoadBalancer
+  LoadBalancerDNSName:
+    Description: The DNSName of the load balancer
+    Value: !GetAtt ApplicationLoadBalancer.DNSName
+  TargetGroup:
+    Description: The created target group.
+    Value:
+      Ref: TargetGroup

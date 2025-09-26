@@ -21,6 +21,9 @@ import { ProductCategoryResolver } from '../core/service/product-category.resolv
 import { TaxValueListComponent } from '../admin/tax-value/tax-value-list.component';
 import { TaxValueComponent } from '../admin/tax-value/tax-value.component';
 import { TaxValueResolver } from '../core/service/tax.value.resolver';
+import { CatalogComponent } from './catalog/catalog.component';
+import { CatalogItemComponent } from './catalog/catalog-item.component';
+import { CatalogResolver } from '../core/service/catalog.resolver';
 
 export const AdminRoutes: Routes = [
   {
@@ -99,6 +102,17 @@ export const AdminRoutes: Routes = [
         path: ':establishmentId/branch/:branchId/edit', component: BranchUpdateComponent,
         resolve: {
           branch: BranchResolver
+        }
+      }]
+  },
+  {
+    path: 'catalog',
+    children: [
+      { path: '', component: CatalogComponent },
+      {
+        path: ':catalogId/items', component: CatalogItemComponent,
+        resolve: {
+          establishment: CatalogResolver
         }
       }]
   },

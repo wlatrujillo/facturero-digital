@@ -1,5 +1,5 @@
 import { Router } from "express";
-import AdminController from"../controller/admin.ctrl";
+import AdminController from "../controller/admin.ctrl";
 export class AdminRoutes {
 
     router: Router;
@@ -19,6 +19,9 @@ export class AdminRoutes {
 
         this.router.route("/role")
             .get(adminController.getRoles);
+
+        this.router.route("/catalog")
+            .get(adminController.getCatalogs);
 
         this.router.route("/catalog/:name")
             .get(adminController.getCatalogByName);

@@ -9,6 +9,7 @@ import { CustomerService } from 'src/app/core/service/customer.service';
 import { AdminService } from 'src/app/core/service/admin.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ValidateCedula } from 'src/app/shared-utility/validators/cedula.validator';
+
 @Component({
     selector: 'app-customer-update',
     templateUrl: './customer-update.component.html',

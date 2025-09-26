@@ -50,6 +50,10 @@ class AdminService {
         return this.roleRepository.retrieve({ _id: { $nin: ['SUPERADMIN'] } });
     }
 
+    getCatalogs = () => {
+        return this.catalogRepository.retrieveAll({});
+    }
+
     getCatalogByName = (name: string) => {
         return this.catalogRepository.findOne({ name });
     }

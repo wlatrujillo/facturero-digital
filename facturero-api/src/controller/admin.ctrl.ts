@@ -44,6 +44,19 @@ class AdminController {
         }
     }
 
+    getCatalogs = async (req: Request, res: Response) => {
+
+        try {
+            let response: any = await this.adminService.getCatalogs();
+            res.send(response);
+        }
+        catch (error: any) {
+            logger.error(error);
+            res.status(500).send(error.message);
+
+        }
+    }
+
     getCatalogByName = async (req: Request, res: Response) => {
 
         try {

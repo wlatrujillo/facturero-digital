@@ -15,11 +15,15 @@ import { ProductResolver } from '../core/service/product.resolver';
 import { ProductService } from '../core/service/product.service';
 import { TaxValueResolver } from '../core/service/tax.value.resolver';
 import { UserResolver } from '../core/service/user.resolver';
-
-
+import { CatalogComponent } from './catalog/catalog.component';
+import { CatalogItemComponent } from './catalog/catalog-item.component';
+import { CatalogResolver } from '../core/service/catalog.resolver';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    CatalogComponent,
+    CatalogItemComponent
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(AdminRoutes),
@@ -34,6 +38,7 @@ import { UserResolver } from '../core/service/user.resolver';
     ProductCategoryResolver,
     EstablishmentService,
     EstablishmentResolver,
+    CatalogResolver,
     BranchService,
     BranchResolver,
     CustomerResolver,
