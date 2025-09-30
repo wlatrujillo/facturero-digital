@@ -71,7 +71,8 @@ class App {
   //Conexión a MongoDB database
   private setMongoConfig() {
     mongoose.Promise = global.Promise;
-    mongoose.connect(process.env.DATABASE || '', {});
+    mongoose.set('strictQuery', false);
+    mongoose.connect(process.env.DATABASE || 'mongodb://127.0.0.1:27017/facturero', {});
   }
 }
 
