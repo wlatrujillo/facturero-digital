@@ -1,12 +1,13 @@
 import { Document, Schema, Model, model, Types } from "mongoose";
 
 
-interface Item {
-    code: String,
-    value: String
+export interface Item {
+    code: String;
+    value: String;
 }
 export interface ICatalog extends Document {
     name: String;
+    description?: String;
     active: Boolean;
     items: Item[];
     company: Types.ObjectId;
@@ -22,6 +23,12 @@ let CatalogSchema = new Schema({
     name: {
         type: String,
         required: true,
+        trim: true,
+        nullable: false
+    },
+    description: {
+        type: String,
+        required: false,
         trim: true
     },
     active: {
@@ -31,7 +38,7 @@ let CatalogSchema = new Schema({
 
     },
     items: {
-        type: [{ code: String, value: String }],
+        type: [{code: String, value: String}],
         required: true
     }
 

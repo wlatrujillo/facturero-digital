@@ -2,10 +2,9 @@ import { DataSource } from "@angular/cdk/table";
 import { BehaviorSubject, of } from "rxjs";
 import { catchError, finalize } from "rxjs/operators";
 import { HttpClient, HttpResponse } from "@angular/common/http";
-import { Product } from "../model/product";
 import { Catalog } from "../model/catalog";
 
-export class CatalogDataSource implements DataSource<Product>{
+export class CatalogDataSource implements DataSource<Catalog>{
 
     private catalogSubject = new BehaviorSubject<Catalog[]>([]);
 
@@ -16,6 +15,8 @@ export class CatalogDataSource implements DataSource<Product>{
     public loading$ = this.loadingSubject.asObservable();
 
     public totalRows$ = this.totalRowSubject.asObservable();
+
+    public data$ = this.catalogSubject.asObservable();
 
 
     constructor(private http: HttpClient) {

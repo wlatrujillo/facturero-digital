@@ -7,6 +7,7 @@ import CompanyRepository from '../repository/company.repository';
 import CountryRepository from '../repository/country.repository';
 import StateRepository from '../repository/state.repository';
 import CityRepository from '../repository/city.respository';
+import { ICatalog, Item } from '../model/catalog';
 
 class AdminService {
 
@@ -28,7 +29,7 @@ class AdminService {
         this.cityRepository = new CityRepository();
     }
 
-    retrieveByParent = async (parentId: String, roleId: string) => {
+    retrieveMenuByParent = async (parentId: String, roleId: string) => {
         let menus =
             await this.menuRepository.retrieve({ parent: parentId === '' ? undefined : parentId, roles: { $in: roleId } });
         menus.forEach(m => m.roles = []);
@@ -37,10 +38,10 @@ class AdminService {
 
     retrieveMenu = async (role: string) => {
 
-        let menus = await this.retrieveByParent('', role);
+        let menus = await this.retrieveMenuByParent('', role);
 
         for (let menu of menus) {
-            menu.children = await this.retrieveByParent(menu._id, role);
+            menu.children = await this.retrieveMenuByParent(menu._id, role);
         }
 
         return menus;
@@ -50,11 +51,11 @@ class AdminService {
         return this.roleRepository.retrieve({ _id: { $nin: ['SUPERADMIN'] } });
     }
 
-    getCatalogs = () => {
+    getCatalogs = () : Promise<ICatalog[]> => {
         return this.catalogRepository.retrieveAll({});
     }
 
-    getCatalogByName = (name: string) => {
+    getCatalogByName = (name: string): Promise<ICatalog> => {
         return this.catalogRepository.findOne({ name });
     }
 

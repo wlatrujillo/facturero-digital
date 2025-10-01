@@ -11,66 +11,91 @@
         <input matInput placeholder="Ingrese el nombre" #search>
       </mat-form-field>
 
-      <mat-table class="invoice-table mat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="name"
-        matSortDirection="asc" matSortDisableClear>
+      <form [formGroup]="VOForm" autocomplete="off" style="width: 100%;">
+
+        <ng-container formArrayName="VORows">
+          <mat-table class="invoice-table mat-elevation-z8" [dataSource]="dataSourceForm" matSort matSortActive="name"
+            matSortDirection="asc" matSortDisableClear>
+
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+              <mat-cell *matCellDef="let element" [formGroup]="element">
+                <a [routerLink]="['./', element._id, 'items']">
+                  {{element.value.name}}
+                </a>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="active">
+              <mat-header-cell *matHeaderCellDef>Active</mat-header-cell>
+              <mat-cell class="description-cell" *matCellDef="let element">
+                <mat-slide-toggle class="example-margin" [checked]="element.active" [disabled]="true">
+                  Slide me!
+                </mat-slide-toggle>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+              <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+              <mat-cell class="description-cell" *matCellDef="let element; let i = index" [formGroup]="element">
+
+                <mat-form-field *ngIf="VOForm.get('VORows').value[i].isEditable" appearance="fill">
+                  <input matInput type="text" formControlName="description" />
+                </mat-form-field>
+
+                <span *ngIf="!VOForm.get('VORows').value[i].isEditable">
+                  {{element.value.description}}
+                </span>
+
+              </mat-cell>
+            </ng-container>
+
+            <!-- actions -->
+            <ng-container matColumnDef="actions">
+
+              <th mat-header-cell *matHeaderCellDef>
+                <a *ngIf="!readonly" mat-icon-button color="primary" [routerLink]="['new']">
+                  <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+                </a>
+              </th>
+
+              <td mat-cell *matCellDef="let element; let i = index;" [formGroup]="element" class="group-actions text-right">
 
 
-        <ng-container matColumnDef="name">
+                <button mat-icon-button class="material-icons app-toolbar-menu save-button" matTooltip="Save Changes"
+                  (click)="SaveVO(i, VOForm)" *ngIf="VOForm.get('VORows').value[i].isEditable" color="primary">
+                  <mat-icon>check_circle</mat-icon>
+                </button>
 
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+                <button mat-icon-button class="material-icons app-toolbar-menu cancel-button"
+                  matTooltip="Cancel Changes" color="warn" (click)="CancelSVO(i, VOForm)"
+                  *ngIf="VOForm.get('VORows').value[i].isEditable">
+                  <mat-icon>cancel</mat-icon>
+                </button>
 
-          <mat-cell *matCellDef="let element">
+                <button *ngIf="!VOForm.get('VORows').value[i].isEditable" mat-icon-button class="btn btn-success btn-link" (click)="editSVO(i, VOForm)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button *ngIf="!VOForm.get('VORows').value[i].isEditable" mat-icon-button class="btn btn-danger btn-link"
+                  (click)="onDelete(i, element)">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </td>
 
-            <a [routerLink]="['./', element._id, 'items']">
-              {{element.name}}
-            </a>
+            </ng-container>
 
-          </mat-cell>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+
+
+          </mat-table>
 
         </ng-container>
 
-        <ng-container matColumnDef="active">
+      </form>
 
-          <mat-header-cell *matHeaderCellDef>Active</mat-header-cell>
-
-          <mat-cell class="description-cell" *matCellDef="let element">
-
-            <mat-slide-toggle class="example-margin" [checked]="element.active" [disabled]="true">
-              Slide me!
-            </mat-slide-toggle>
-          </mat-cell>
-
-        </ng-container>
-
-        <ng-container matColumnDef="description">
-
-          <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
-
-          <mat-cell class="description-cell" *matCellDef="let element">{{element.description}}</mat-cell>
-
-        </ng-container>
-
-        <!-- actions -->
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>
-            <a *ngIf="!readonly" mat-icon-button color="primary" [routerLink]="['new']">
-              <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
-            </a>
-          </th>
-          <td mat-cell *matCellDef="let element; let i = index;" class="group-actions text-right">
-            <button *ngIf="!readonly" mat-icon-button class="btn btn-success btn-link">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button *ngIf="!readonly" mat-icon-button class="btn btn-danger btn-link" (click)="onDelete(i, element)">
-              <mat-icon>close</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-
-      </mat-table>
       <mat-paginator class="invoice-paginator mat-elevation-z8" [length]="dataSource.totalRows$ | async"
         [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons>
       </mat-paginator>
