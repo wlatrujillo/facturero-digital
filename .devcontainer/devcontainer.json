@@ -15,5 +15,6 @@
             "label": "Facturacion api",
             "onAutoForward": "notify"
         }
-    }
+    },
+     "forwardPorts": [27017]
 }

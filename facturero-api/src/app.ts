@@ -72,7 +72,15 @@ class App {
   private setMongoConfig() {
     mongoose.Promise = global.Promise;
     mongoose.set('strictQuery', false);
-    mongoose.connect(process.env.DATABASE || 'mongodb://127.0.0.1:27017/facturero', {});
+    mongoose.connect(process.env.DATABASE || 'mongodb://localhost:27017/facturero', {})
+    .then(success => {
+      console.log("Conexión a la base de datos establecida exitosamente");
+    })
+    .catch(error => {
+      console.log("Error de conexion a la base de datos");
+      console.error(error);
+      process.exit();
+    });
   }
 }
 

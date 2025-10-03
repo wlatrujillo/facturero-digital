@@ -2,3 +2,8 @@
 .env
 **/logs
 **/dist
+.vscode
+.DS_Store
+.idea
+*.log
+*.tmp
