@@ -28,10 +28,9 @@
 
             <ng-container matColumnDef="active">
               <mat-header-cell *matHeaderCellDef>Active</mat-header-cell>
-              <mat-cell class="description-cell" *matCellDef="let element">
-                <mat-slide-toggle class="example-margin" [checked]="element.active" [disabled]="true">
-                  Slide me!
-                </mat-slide-toggle>
+              <mat-cell class="description-cell" *matCellDef="let element; let i = index" [formGroup]="element">
+                <mat-checkbox class="example-margin" [checked]="element.active" [disabled]="!VOForm.get('VORows').value[i].isEditable">
+                </mat-checkbox>
               </mat-cell>
             </ng-container>
 
@@ -97,7 +96,7 @@
       </form>
 
       <mat-paginator class="invoice-paginator mat-elevation-z8" [length]="dataSource.totalRows$ | async"
-        [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons>
+        [pageSizeOptions]="[3, 5, 10]" showFirstLastButtons>
       </mat-paginator>
     </div>
   </div>

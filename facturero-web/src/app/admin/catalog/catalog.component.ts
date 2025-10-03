@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTab } from '@angular/material/tabs';
+import { merge, tap } from 'rxjs';
 import { Catalog } from 'src/app/core/model/catalog';
 import { AdminService } from 'src/app/core/service/admin.service';
 import { CatalogDataSource } from 'src/app/core/service/catalog.datasource';
@@ -14,7 +15,7 @@ import { CatalogDataSource } from 'src/app/core/service/catalog.datasource';
   templateUrl: './catalog.component.html',
   styleUrls: ['./catalog.component.css']
 })
-export class CatalogComponent implements OnInit {
+export class CatalogComponent implements OnInit, AfterViewInit {
 
   displayedColumns = ["name", "active", "description", "actions"];
   dataSource: CatalogDataSource;
@@ -38,6 +39,16 @@ export class CatalogComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private adminService: AdminService) { }
 
+
+  ngAfterViewInit(): void {
+
+    merge(this.paginator.page)
+      .pipe(
+        tap(() => this.dataSource.load('', 'name', this.paginator.pageIndex, this.paginator.pageSize))
+      )
+      .subscribe();
+  }
+
   ngOnInit(): void {
 
     this.dataSource = new CatalogDataSource(this.http);
@@ -48,7 +59,7 @@ export class CatalogComponent implements OnInit {
       VORows: this._formBuilder.array([])
     });
 
-    this.dataSource.load('', 'name', 0, 5);
+    this.dataSource.load('', 'name', 0, 3);
     this.dataSource.data$.subscribe(data => {
       this.VOForm = this.fb.group({
         VORows: this.fb.array(data.map(val => this.fb.group({
@@ -74,7 +85,6 @@ export class CatalogComponent implements OnInit {
   }
   // On click of correct button in table (after click on edit) this method will call
   SaveVO(i, VOFormElement) {
-    alert('SaveVO')
     VOFormElement.get('VORows').at(i).get('isEditable').patchValue(false);
   }
 

@@ -4,6 +4,7 @@ import { EmailService } from "../service/mail.service";
 import { Request, Response } from "express";
 import { getLogger } from 'log4js';
 import { Email } from "../model/email";
+import { PageRequest } from "../model/page-request";
 
 const logger = getLogger("AdminController");
 
@@ -47,8 +48,11 @@ class AdminController {
     getCatalogs = async (req: Request, res: Response) => {
 
         try {
-            let response: any = await this.adminService.getCatalogs();
-            res.send(response);
+            let company = res.locals.jwtPayload.company;
+            let pageRequest = new PageRequest(req);
+            let response: any = await this.adminService.getCatalogs({ company }, pageRequest);
+            res.header('X-Total-Count', response.total);
+            res.send(response.data);
         }
         catch (error: any) {
             logger.error(error);

@@ -8,6 +8,7 @@ import CountryRepository from '../repository/country.repository';
 import StateRepository from '../repository/state.repository';
 import CityRepository from '../repository/city.respository';
 import { ICatalog, Item } from '../model/catalog';
+import { PageRequest } from '../model/page-request';
 
 class AdminService {
 
@@ -51,8 +52,8 @@ class AdminService {
         return this.roleRepository.retrieve({ _id: { $nin: ['SUPERADMIN'] } });
     }
 
-    getCatalogs = () : Promise<ICatalog[]> => {
-        return this.catalogRepository.retrieveAll({});
+    getCatalogs = (criteria: any, pageRequest: PageRequest) : Promise<ICatalog[]> => {
+        return this.catalogRepository.retrieve(criteria, pageRequest);
     }
 
     getCatalogByName = (name: string): Promise<ICatalog> => {

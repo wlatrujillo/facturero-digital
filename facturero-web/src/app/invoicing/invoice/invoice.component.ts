@@ -229,7 +229,7 @@ export class InvoiceComponent implements OnInit {
   private initBranch(user: User): void {
     this.establishmentService.get('', 'asc', 0, 10)
       .subscribe(establishments =>
-        this.branchService.get(establishments[0]._id, '', 'asc', 0, 10)
+        this.branchService.get(establishments[0]?._id, '', 'asc', 0, 10)
           .subscribe(branchs => {
             this.branch = branchs[0]
 
